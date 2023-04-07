@@ -24,6 +24,8 @@ function Home() {
   const navigate = useNavigate();
 
   const { cars } = useSelector(state => state.carsReducer);
+  const [searchQuery, setSearchQuery] = useState("");
+
   const { loading } = useSelector(state => state.alertsReducer);
   const [selectedCar, setSelectedCar] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -38,7 +40,7 @@ function Home() {
     try {
       const response = await axios.get(`http://localhost:5000/user/product/${id}`);
       setSelectedCar(response.data);
-      navigate('/booking', { state: { selectedCar: response.data } });
+      navigate('/booking', { state: { selectedCar: response.data.cars } });
     } catch (error) {
       console.log(error);
     }
@@ -48,14 +50,26 @@ function Home() {
     setCurrentPage(page);
   }
 
+  const filteredCars = cars.filter((car) =>
+    car.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   const indexOfLastCar = currentPage * pageSize;
   const indexOfFirstCar = indexOfLastCar - pageSize;
-  const currentCars = cars.slice(indexOfFirstCar, indexOfLastCar);
+  const currentCars = filteredCars.slice(indexOfFirstCar, indexOfLastCar);
 
   return (
     <DefaultLayout>
       {loading === true && (<Spinner />)}
+      <input
+  type="text"
+  placeholder="Search for cars"
+  value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+/>
+
       <Row justify='center' gutter={16} className="mt-5">
+        
         {currentCars.map(car => {
           return <Col lg={5} sm={24} xs={24}>
             <div className='car p-2 bs1'>
