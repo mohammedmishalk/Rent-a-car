@@ -14,7 +14,8 @@ function Booking() {
   const user = localStorage.getItem('user');
   console.log(user)
   const location = useLocation();
-  const car = location.state.selectedCar;
+  const selectedCar = location.state.selectedCar;
+  const car = selectedCar.cars;
   const carName=car.name
   console.log(carName)
   const [from, setFrom] = useState();
@@ -34,9 +35,9 @@ const [showDatePicker, setShowDatePicker] = useState(true);
  }
 
  useEffect(() => {
-   setTotalAmount(totalDays * car.rentPerDay);
+   setTotalAmount((totalDays * car.rentPerDay) + driver && (totalDays *30) )
   if(driver){
-    setTotalAmount((totalDays * car.rentPerDay)+30);
+    setTotalAmount(totalAmount + (30 * totalDays))
   }
   
  }, [driver,totalDays])
@@ -109,7 +110,7 @@ return (
     <DatePicker.RangePicker showTime={{format:"HH:mm"}} format='MM DD YYYY HH:mm' onChange={selectTimeSolt}/>
     <div>
       <p>Total Days :<b>{totalDays}</b></p> 
-      <p> Rent Per Day :<b> {car.rentPerDay}</b></p>
+      <p> Rent Per Day :<b> {car.rentPerday}</b></p>
       <Checkbox onChange={(e)=>{
         if(e.target.checked){
           setdriver(true);
@@ -132,7 +133,7 @@ return (
     <DatePicker.RangePicker showTime={{format:"HH:mm"}} format='MM DD YYYY HH:mm' onChange={selectTimeSolt}/>
     <div>
       <p>Total Days :<b>{totalDays}</b></p> 
-      <p> Rent Per Day :<b> {car.rentPerDay}</b></p>
+      <p> Rent Per Day :<b> {car.rentPerday}</b></p>
       <Checkbox onChange={(e)=>{
         if(e.target.checked){
           setdriver(true);

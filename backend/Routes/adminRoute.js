@@ -16,10 +16,11 @@ const {
   Refunde,
   Delivery,
   adminHomeRender,
+  adminLogin
  
 } = require('../Controllers/Admin-controller');
 const router = express.Router();
-
+router.post('/login', adminLogin);
 router.post("/addcar",upload.array('image', 4), AddCars);
 router.get("/blockcars/:id", blockCars);
 router.get("/getallcars", getAllCars);

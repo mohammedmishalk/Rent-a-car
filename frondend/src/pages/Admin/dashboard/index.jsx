@@ -95,7 +95,7 @@ console.log(data)
         >
           <StatBox
             title={data.totalIncome}
-            subtitle="Total income"
+            subtitle="Total courses"
             // progress="0.50"
             // increase="+21%"
             icon={

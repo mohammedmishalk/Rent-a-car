@@ -40,6 +40,7 @@ import BookingHistory from './pages/User/BookingHistory';
 import Payment from './pages/User/Payment';
 import PaymentSuccess from './pages/User/PaymentSuccess';
 import AdminRouter from './Route/AdminRouter';
+import LoginAdmin from "./pages/Admin/LoginAdmin"
 function App() {
   const user=localStorage.getItem("user");
   return (
@@ -47,6 +48,7 @@ function App() {
       <Routes>
 
         //user route
+        <Route path="/admin/login" element={ <LoginAdmin /> } />
         <Route path="/login" element={ <Login /> } />
         <Route path="/signup" element={<Sigup />} />
         <Route path="/OTP" element={<OTP />} />
