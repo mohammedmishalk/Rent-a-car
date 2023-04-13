@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@material-ui/core';
-import axios from 'axios';
+// import axios from 'axios';
 import { Link } from 'react-router-dom';
-// import requests from '../../../api/request';
+import axios from "../../../api/axios";
 import swal from 'sweetalert';
 
 function Cars() {
@@ -18,7 +18,7 @@ function Cars() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get("http://localhost:5000/admin/getallcars");
+        const response = await axios.get("/admin/getallcars");
         setCars(response.data);
       } catch (error) {
         console.log(error);
@@ -54,7 +54,7 @@ function Cars() {
 
 
       
-      const response = await axios.get(`http://localhost:5000/admin/blockcars/${id}`);
+      const response = await axios.get(`/admin/blockcars/${id}`);
       console.log(response)
     window.location="/admin/cardata"
     } catch (error) {

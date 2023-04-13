@@ -13,7 +13,6 @@ import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
-
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -86,8 +85,6 @@ const Sidebar = () => {
             )}
           </MenuItem>
 
-         
-
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item
               title="Dashboard"
@@ -126,6 +123,14 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
 
+            <Item
+              title="sales report"
+              to="/admin/sales"
+              icon={<ReceiptOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+
             {/* <Typography
               variant="h6"
               color={colors.grey[300]}
@@ -140,7 +145,6 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             /> */}
-           
           </Box>
         </Menu>
       </ProSidebar>

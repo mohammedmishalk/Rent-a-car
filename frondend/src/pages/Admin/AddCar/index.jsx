@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+import axios from "../../../api/axios";
 import {
   Box,
   Button,
@@ -65,7 +65,7 @@ const AddCar = () => {
       console.log(formData)
 
     axios
-      .post("http://localhost:5000/admin/addcar", formData, {
+      .post("/admin/addcar", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

@@ -10,8 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 
 
-
-import axios from "axios";
+import axios from "../../api/axios";
 
 
 function OTP() {
@@ -25,7 +24,7 @@ function OTP() {
 
   const sendRequest = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/user/verify-otp', { otp });
+      const response = await axios.post('/user/verify-otp', { otp });
       if (response.data.err) {
         setError(response.data.err);
       } else if (response.data.success) {

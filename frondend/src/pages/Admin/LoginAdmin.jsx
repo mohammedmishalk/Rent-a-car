@@ -1,6 +1,6 @@
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import { useState } from 'react';
-import axios from 'axios';
+import axios from "../../api/axios";
 import Swal from "sweetalert2";
 
 export default function Example() {
@@ -15,7 +15,7 @@ export default function Example() {
 
   const sendReguest=async (e)=>{
     try {
-      const response = await axios.post("http://localhost:5000/admin/login", 
+      const response = await axios.post("/admin/login", 
       {
         email:inputs.email,
         password:inputs.password,

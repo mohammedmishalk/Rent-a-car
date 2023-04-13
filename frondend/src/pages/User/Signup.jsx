@@ -1,6 +1,6 @@
 
 import { LockClosedIcon } from '@heroicons/react/20/solid'
-import axios from 'axios'
+import axios from "../../api/axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -19,7 +19,7 @@ export default function Example() {
   const sendReguest=async (e)=>{
     try {
       console.log(inputs)
-      const res = await axios.post('http://localhost:5000/user/signup',{
+      const res = await axios.post('/user/signup',{
         name:inputs.name,
         email:inputs.email,
         password:inputs.password,

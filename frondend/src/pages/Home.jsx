@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Row, Col, Pagination } from 'antd';
-import axios from 'axios';
+import axios from "../../src/api/axios";
 import DefaultLayout from "../component/DefaultLayout"
 import { getAllCars } from '../redux/actions/carsActions';
 import Spinner from '../component/Spinner';
@@ -36,7 +36,7 @@ function Home() {
 
   const carDetails = async (id) => {
     try {
-      const response = await axios.get(`http://localhost:5000/user/product/${id}`);
+      const response = await axios.get(`/user/product/${id}`);
       setSelectedCar(response.data);
       navigate('/booking', { state: { selectedCar: response.data } });
     } catch (error) {

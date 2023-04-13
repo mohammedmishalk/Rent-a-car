@@ -1,6 +1,6 @@
 // import * as React from 'react';
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from "../../../api/axios";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -22,7 +22,7 @@ import Paper from '@mui/material/Paper';
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get("http://localhost:5000/admin/Booking");
+        const response = await axios.get("/admin/Booking");
         setoders(response.data.found);
       } catch (error) {
         console.log(error);
@@ -39,7 +39,7 @@ import Paper from '@mui/material/Paper';
 
 
       
-      const response = await axios.get(`http://localhost:5000/admin/Refunde/${id}`);
+      const response = await axios.put(`/admin/Refunde/${id}`);
       console.log(response)
     window.location="/admin/oders"
     } catch (error) {
@@ -49,7 +49,7 @@ import Paper from '@mui/material/Paper';
   
   const handleDrilver=async(id)=>{
     try {
-      const response = await axios.get(`http://localhost:5000/admin/Refunde/${id}`);
+      const response = await axios.put(`/admin/deliver/${id}`);
       console.log(response)
     window.location="/admin/oders"
     } catch (error) {
@@ -103,7 +103,7 @@ import Paper from '@mui/material/Paper';
 
 <TableCell align="right">
   {row.orderStatus === 'Pending' ? 
-    <button onClick={() => handleDrilver(row._id)} style={{backgroundColor: 'green', color: 'white', padding: '5px 10px', borderRadius: '4px'}}>Deliver</button> 
+    <button onClick={() => handleDrilver(row._id)} style={{backgroundColor: 'green', color: 'white', padding: '5px 10px', borderRadius: '4px'}}>Returned</button> 
     : null
   }
 </TableCell>

@@ -16,7 +16,8 @@ const {
   Refunde,
   Delivery,
   adminHomeRender,
-  adminLogin
+  adminLogin,
+  getSalesReport
  
 } = require('../Controllers/Admin-controller');
 const router = express.Router();
@@ -30,7 +31,7 @@ router.get('/booking',getAllbooking)
 router.put('/Refunde/:id',Refunde)
 router.put('/deliver/:id',Delivery)
 router.get('/home',adminHomeRender);
-
+router.get('/salesReport',getSalesReport);
 
 
 module.exports = router;

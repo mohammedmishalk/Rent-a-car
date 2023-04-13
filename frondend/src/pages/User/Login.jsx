@@ -1,8 +1,8 @@
 import { LockClosedIcon } from '@heroicons/react/20/solid'
 import { useState } from 'react';
-import axios from 'axios';
+import axios from "../../api/axios";
 import Swal from "sweetalert2";
-
+import { Link } from 'react-router-dom';
 export default function Example() {
 
   const [inputs, setInputs] = useState({
@@ -15,7 +15,7 @@ export default function Example() {
 
   const sendReguest=async (e)=>{
     try {
-      const response = await axios.post("http://localhost:5000/user/login", 
+      const response = await axios.post("/user/login", 
       {
         email:inputs.email,
         password:inputs.password,
@@ -24,6 +24,7 @@ export default function Example() {
       if(response.data.token){
         localStorage.setItem("token",response.data.token)
         localStorage.setItem("email",response.data.email)
+        localStorage.setItem("wallet",response.data.wallet)
         localStorage.setItem("user",response.data.name)
         localStorage.setItem("uid",response.data.uid)
         window.location="/"
@@ -60,14 +61,10 @@ export default function Example() {
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-50">
-        <body class="h-full">
-        ```
-      */}
+ 
+ 
+ 
+      
       <div className="flex min-h-full items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div>
@@ -118,15 +115,17 @@ export default function Example() {
 
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <input
+                {/* <input
                   id="remember-me"
                   name="remember-me"
                   type="checkbox"
                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                  Remember me
-                </label>
+                /> */}
+                <Link to="/signup">
+                <a  className="font-medium text-indigo-600 hover:text-indigo-500" htmlFor="remember-me" >
+                 Singup
+                </a>
+                </Link>
               </div>
 
               <div className="text-sm">

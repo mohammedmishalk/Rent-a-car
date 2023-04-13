@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Row, Col, Divider, Button, Radio } from "antd";
 import DefaultLayout from "../../component/DefaultLayout";
-import axios from "axios";
+import axios from "../../api/axios";
 import useRazorpay from "react-razorpay";
 
 function Payment() {
@@ -10,8 +10,10 @@ function Payment() {
   const Razorpay = useRazorpay();
   const [PaymentMethod, setSelectedPaymentMethod] = useState("");
   const location = useLocation();
+  console.log(location.state)
   const totalAmount = location.state.totalAmount;
   const uid = localStorage.getItem("uid");
+  const wallet = localStorage.getItem('wallet');
   function handleWalletPayment() {
     setSelectedPaymentMethod("wallet");
   }
@@ -23,7 +25,7 @@ function Payment() {
   function handlePayment() {
     if (PaymentMethod) {
       axios
-        .post("http://localhost:5000/user/orderConfirmed", {
+        .post("/user/orderConfirmed", {
           uid: uid,
           carName: location.state.carName,
           paymethod: PaymentMethod,
@@ -34,36 +36,40 @@ function Payment() {
           totalDays: location.state.totalDays,
         })
         .then((response) => {
-          console.log(response.data[0].orders);
-          const order = response.data[0].orders;
-          var options = {
-            key: "rzp_test_XUbZpvWoTVZ2ie", // Enter the Key ID generated from the Dashboard
-            amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-            currency: "INR",
-            name: "rent car", //your business name
-            description: "Test Transaction",
-            image: "https://example.com/your_logo",
-            order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
-            handler: function (response) {
-              verifyPayment(response, order);
-            },
-            prefill: {
-              name: "rentacar",
-              email: "misahlnunu@gmail.com",
-              contact: "9999999999",
-            },
-            notes: {
-              address: "Razorpay Corporate Office",
-            },
-            theme: {
-              color: "#235784",
-            },
-          };
-          var rzp1 = new Razorpay(options);
-          rzp1.on("payment.failed", function (response) {
-            //redirect to payment failed page
-          });
-          rzp1.open();
+          console.log(response);
+          if (response.data[0].success) {
+            navigate("/success");
+          } else {
+            const order = response.data[0].orders;
+            var options = {
+              key: "rzp_test_XUbZpvWoTVZ2ie", // Enter the Key ID generated from the Dashboard
+              amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+              currency: "INR",
+              name: "rent car", //your business name
+              description: "Test Transaction",
+              image: "https://example.com/your_logo",
+              order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+              handler: function (response) {
+                verifyPayment(response, order);
+              },
+              prefill: {
+                name: "rentacar",
+                email: "misahlnunu@gmail.com",
+                contact: "9999999999",
+              },
+              notes: {
+                address: "Razorpay Corporate Office",
+              },
+              theme: {
+                color: "#235784",
+              },
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.on("payment.failed", function (response) {
+              //redirect to payment failed page
+            });
+            rzp1.open();
+          }
         })
         .catch((err) => {
           console.log(err);
@@ -73,7 +79,7 @@ function Payment() {
 
   function verifyPayment(response, order) {
     axios
-      .post("http://localhost:5000/user/verifyPayment", {
+      .post("/user/verifyPayment", {
         razorpay_payment_id: response.razorpay_payment_id,
         razorpay_order_id: response.razorpay_order_id,
         razorpay_signature: response.razorpay_signature,
@@ -169,7 +175,7 @@ function Payment() {
                   onClick={handleWalletPayment}
                 />
                 <h4>Pay with Wallet</h4>
-                <p>Your wallet balance: $.00</p>
+                <p>Your wallet balance: {wallet}</p>
               </div>
             </Col>
             <Col lg={10} md={10} sm={24} xs={24}>

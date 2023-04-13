@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from "../../api/axios";
 
 axios.defaults.withCredentials = true;
 let firstRender=true
@@ -9,7 +9,7 @@ function WelcomePage() {
 
   const sendRequest = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/user', {
+      const res = await axios.get('/api/user', {
         withCredentials: true,
       });
       const data = res.data;
@@ -22,7 +22,7 @@ function WelcomePage() {
 
   const refreshToken = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/refresh', {
+      const res = await axios.get('/api/refresh', {
         withCredentials: true,
       });
       const data = res.data;

@@ -1,12 +1,13 @@
-import { Box,  useTheme } from "@mui/material";
+import { Box,  useTheme ,Typography} from "@mui/material";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 import { tokens } from "../theme";
 import { useState, useEffect } from 'react';
-import axios from "axios"
+import axios from "../../../api/axios";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import ProgressCircle from "../../../component/ProgressCircle";
 
 import Header from "../Header/Header";
 
@@ -23,7 +24,7 @@ console.log(data)
     async function fetchData() {
       try {
 
-        const response = await axios.get("http://localhost:5000/admin/home");
+        const response = await axios.get("/admin/home");
        
         setdata(response.data);
         setChartData(response.data);
@@ -95,7 +96,7 @@ console.log(data)
         >
           <StatBox
             title={data.totalIncome}
-            subtitle="Total courses"
+            subtitle="Total income"
             // progress="0.50"
             // increase="+21%"
             icon={
@@ -140,7 +141,31 @@ console.log(data)
     <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
   </LineChart>
 </Box>
-
+<Typography variant="h5" fontWeight="600">
+            Campaign
+          </Typography>
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            mt="25px"
+          >
+            <ProgressCircle size="125" />
+            <Typography
+              variant="h5"
+              color={colors.greenAccent[500]}
+              sx={{ mt: "15px" }}
+            >
+              $48,352 revenue generated
+            </Typography>
+            <Typography>Includes extra misc expenditures and costs</Typography>
+          </Box>
+        </Box>
+        <Box
+          gridColumn="span 4"
+          gridRow="span 2"
+          backgroundColor={colors.primary[400]}
+        >
 
      </Box>
     </Box>

@@ -8,7 +8,7 @@ import ManageUser from '../pages/Admin/ManageUser/index';
 import CarData from "../pages/Admin/CarsData/index";
 import Oders from '../pages/Admin/Oders/index'
 import Addcar from "../pages/Admin/AddCar/index"
-
+import SalesReport from "../pages/Admin/SalesReport/index"
 // import Form from "../pages/Admin/form/index";
 
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -35,6 +35,7 @@ function AdminRouter() {
               <Route path="/cardata" element={<CarData />}  />
               <Route path="/oders" element={ token ?  <Oders /> : <Navigate to="/admin/login"/>} />
               <Route path="/addcars" element={ token ?  <Addcar /> : <Navigate to="/admin/login"/>} />
+              <Route path="/sales" element={ token ?  <SalesReport /> : <Navigate to="/admin/login"/>} />
               {/* <Route path="/form" element={ token ?  <Form / >  : <Navigate to="/admin/login"/>} /> */}
               
             </Routes>

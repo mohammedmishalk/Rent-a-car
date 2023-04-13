@@ -3,7 +3,7 @@ import { Button, Dropdown, Space } from 'antd';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWallet } from '@fortawesome/free-solid-svg-icons'
 import { Link } from "react-router-dom";
- import axios from 'axios';
+ import axios from "../api/axios";
 
 function Wallet() {
   const [balance, setBalance] = useState(0);
@@ -12,14 +12,14 @@ function Wallet() {
 
   // retrieve balance from backend API on component mount
   useEffect(() => {
-    axios.get('http://localhost:5000/user/walletbalance',{
+    axios.get('/user/walletbalance',{
       params: {
         uid: uid
       }
     })
       .then(response => setBalance(response.data.wallet))
       .catch(error => console.error(error));
-  }, []);
+  }, [uid]);
 
   return (
     <div className="wallet">
