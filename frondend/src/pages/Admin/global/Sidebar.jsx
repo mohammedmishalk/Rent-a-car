@@ -10,6 +10,7 @@ import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 
@@ -31,12 +32,25 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   );
 };
 
+const LogoutButton = ({ handleLogout }) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  return (
+    <MenuItem onClick={handleLogout} icon={<ExitToAppOutlinedIcon />}>
+      <Typography style={{ color: colors.grey[100] }}>Logout</Typography>
+    </MenuItem>
+  );
+};
+
 const Sidebar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = '/admin/login'; // redirect to login page after logout
+  };
   return (
     <Box
       sx={{
@@ -145,6 +159,8 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             /> */}
+
+<LogoutButton handleLogout={handleLogout} />
           </Box>
         </Menu>
       </ProSidebar>

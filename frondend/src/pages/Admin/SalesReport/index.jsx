@@ -10,7 +10,7 @@ import Paper from '@mui/material/Paper';
 import { Typography, Button } from 'antd';
 import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
 import { pdf, Document, Page } from '@react-pdf/renderer';
-
+import {config} from "../../../Helpers/axiosAdminEndpoints"
 import MyDocument from '../../../component/MyDocument';
 
 function BasicTable() {
@@ -20,7 +20,7 @@ function BasicTable() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get("/admin/salesReport");
+        const response = await axios.get("/admin/salesReport",config);
         setoders(response.data.month);
       } catch (error) {
         console.log(error);
@@ -67,7 +67,7 @@ function BasicTable() {
               <TableRow key={row.order_id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                 <TableCell align="right">{row.order_id}</TableCell>
                 <TableCell align="right">{row.totalAmount}</TableCell>
-                <TableCell align="right">{row.paymentStatus}</TableCell>
+                <TableCell align="right">{row.dropped}</TableCell>
                 <TableCell align="right">{row.orderStatus}</TableCell>
               </TableRow>
             ))}

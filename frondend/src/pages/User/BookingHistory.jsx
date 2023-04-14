@@ -3,6 +3,7 @@ import { Table, Button, message } from "antd";
 import axios from "../../api/axios";
 import DefaultLayout from "../../component/DefaultLayout";
 import moment from "moment";
+import { config } from "../../Helpers/axiosUserEndpoins";
 
 function BookingHistory() {
   const [bookings, setBookings] = useState([]);
@@ -15,6 +16,7 @@ function BookingHistory() {
         params: {
           uid: uid,
         },
+        ...config
       })
       .then((response) => {
         console.log(response.data.userBooked);
@@ -26,7 +28,7 @@ function BookingHistory() {
   const handleCancel = (bookingId) => {
     // Send a request to cancel the booking with the specified ID
     axios
-      .put(`/user/cancel/${bookingId}`)
+      .put(`/user/cancel/${bookingId}`,null, config)
       .then((response) => {
         // Update the state to remove the cancelled booking
         // const updatedBookings = bookings.filter(b => b.order_id !== bookingId);

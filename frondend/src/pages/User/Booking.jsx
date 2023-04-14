@@ -5,6 +5,7 @@ import { Row, Col, Divider, DatePicker, Checkbox } from "antd";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
+import { config } from "../../Helpers/axiosUserEndpoins";
 
 function Booking() {
   const navigate = useNavigate();
@@ -50,6 +51,7 @@ function Booking() {
           user_id: uid,
           carName: carName,
         },
+        ...config
       })
       .then((response) => {
         // console.log(object)

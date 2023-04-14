@@ -202,7 +202,7 @@ const blockCars = async (req, res) => {
             found.totalAmount += lateCharge;
             await found.save();
           } else {
-            value = "Delivered";
+            value = "Returned";
           }
         } else {
           value = "pending";
@@ -220,6 +220,23 @@ const blockCars = async (req, res) => {
   };
 
 
+  const updateBookingStatus = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const found = await Booking.findById(id);
+  
+      if (found) {
+        found.dropped = "delivered";
+        await found.save();
+        res.send({ success: true, message: 'Booking status updated' });
+      } else {
+        throw new Error('Booking not found');
+      }
+    } catch (error) {
+      res.send({ success: false, message: error.message });
+    }
+  };
+  
   const adminHomeRender = async (req, res) => {
     try {
      
@@ -228,12 +245,12 @@ const blockCars = async (req, res) => {
       // const orderData = await Booking.find({ orderStatus: { $ne: 'Cancelled' } });
       const orderCount = await Booking.countDocuments({});
       const pendingOrder = await Booking.find({ orderStatus: 'Pending' }).count();
-      const completed = await Booking.find({ orderStatus: 'Completed' }).count();
-      const delivered = await Booking.find({ orderStatus: 'Delivered' }).count();
-      const cancelled = await Booking.find({ orderStatus: 'Cancelled' }).count();
-      const wallet = await Booking.find({ paymentMethod: 'wallet' }).count();
+      const cancel = await Booking.find({ cancel: 'Refuned' }).count();
+      const delivered = await Booking.find({ orderStatus: 'Returned' }).count();
+      const cancelled = await Booking.find({ orderStatus: 'Pending' }).count();
+      const wallet = await Booking.find({ droped: 'delivered' }).count();
       const online = await Booking.find({ paymentMethod: 'online' }).count();
-      const completedOrders = await Booking.find({ orderStatus: 'Delivered' });
+      const completedOrders = await Booking.find({ orderStatus: 'Returned' });
       const totalIncome = completedOrders.reduce((total, order) => total + order.totalAmount, 0);
 
    
@@ -247,7 +264,7 @@ const blockCars = async (req, res) => {
         // totalamount: totalAmount,
         ordercount: orderCount,
         pending: pendingOrder,
-        completed,
+        cancel,
         delivered,
         cancelled,
         totalIncome: totalIncome,
@@ -291,7 +308,7 @@ const blockCars = async (req, res) => {
           $project: {
             order_id: 1,
             user_id: 1,
-            paymentStatus: 1,
+            dropped: 1,
             totalAmount: 1,
             orderStatus: 1,
             createdAt:1
@@ -324,7 +341,7 @@ const blockCars = async (req, res) => {
           $project: {
             order_id: 1,
             user_id: 1,
-            paymentStatus: 1,
+            dropped: 1,
             totalAmount: 1,
             orderStatus: 1,
             createdAt:1
@@ -355,7 +372,7 @@ const blockCars = async (req, res) => {
           $project: {
             order_id: 1,
             user_id: 1,
-            paymentStatus: 1,
+            dropped: 1,
             totalAmount: 1,
             orderStatus: 1,
             createdAt:1
@@ -382,3 +399,4 @@ exports.adminLogin=adminLogin;
 exports.Delivery=Delivery
 exports.adminHomeRender=adminHomeRender
 exports.getSalesReport=getSalesReport;
+exports.updateBookingStatus=updateBookingStatus;

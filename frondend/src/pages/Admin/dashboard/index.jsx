@@ -1,8 +1,10 @@
 import { Box,  useTheme ,Typography} from "@mui/material";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-
+import PieChart from "./PieChart";
+import BarChart from "./BarChart";
 import { tokens } from "../theme";
 import { useState, useEffect } from 'react';
+import {config} from "../../../Helpers/axiosAdminEndpoints"
 import axios from "../../../api/axios";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
@@ -17,6 +19,49 @@ import Header from "../Header/Header";
 const Dashboard = () => {
   const [chartData, setChartData] = useState([]);
   const [data, setdata] = useState([]);
+
+
+
+  
+  const [userData, setUserData] = useState({
+    labels: ["Complected", "Refuned", "pending"],
+    datasets: [
+      {
+        label: "Count",
+        data: [data.delivered, data.cancel, data.pending],
+        backgroundColor: [
+          "rgba(75,192,192,1)",
+          "#ecf0f1",
+          "#50AF95",
+          "#f3ba2f",
+          "#2a71d0",
+        ],
+        borderColor: "black",
+        borderWidth: 2,
+      },
+    ],
+  });
+
+
+  const [product, setproduct] = useState({
+    labels: ["Total Users", "Total Products"],
+    datasets: [
+      {
+        label: "Count",
+        data: [data.usercount, data.productcount],
+        backgroundColor: [
+          "rgba(75,192,192,1)",
+          "#ecf0f1",
+          "#50AF95",
+          "#f3ba2f",
+          "#2a71d0",
+        ],
+        borderColor: "black",
+        borderWidth: 2,
+      },
+    ],
+  });
+  
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 console.log(data)
@@ -24,10 +69,46 @@ console.log(data)
     async function fetchData() {
       try {
 
-        const response = await axios.get("/admin/home");
+        const response = await axios.get("/admin/home",config);
        
         setdata(response.data);
-        setChartData(response.data);
+        console.log(response.data)
+        setUserData({
+          labels: ["Complected", "Refuned", "pending"],
+          datasets: [
+            {
+              label: "Count",
+              data: [response.data.delivered, response.data.cancel, response.data.pending],
+              backgroundColor: [
+                "rgba(75,192,192,1)",
+                "#ecf0f1",
+                "#50AF95",
+                "#f3ba2f",
+                "#2a71d0",
+              ],
+              borderColor: "black",
+              borderWidth: 2,
+            },
+          ],
+        });
+        setproduct({
+          labels: ["Users", "Product"],
+          datasets: [
+            {
+              label: "Count",
+              data: [response.data.usercount, response.data.productcount],
+              backgroundColor: [
+                "rgba(75,192,192,1)",
+                "#ecf0f1",
+                "#50AF95",
+                "#f3ba2f",
+                "#2a71d0",
+              ],
+              borderColor: "black",
+              borderWidth: 2,
+            },
+          ],
+        });
       } catch (error) {
         console.log(error);
       }
@@ -125,50 +206,22 @@ console.log(data)
             }
           />
         </Box>
-        <Box gridColumn="span 6">
-  <LineChart
-    width={500}
-    height={300}
-    data={chartData}
-    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-  >
-    <XAxis dataKey="name" />
-    <YAxis />
-    <CartesianGrid strokeDasharray="3 3" />
-    <Tooltip />
-    <Legend />
-    <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{ r: 8 }} />
-    <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-  </LineChart>
-</Box>
-<Typography variant="h5" fontWeight="600">
-            Campaign
-          </Typography>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-            mt="25px"
-          >
-            <ProgressCircle size="125" />
-            <Typography
-              variant="h5"
-              color={colors.greenAccent[500]}
-              sx={{ mt: "15px" }}
-            >
-              $48,352 revenue generated
-            </Typography>
-            <Typography>Includes extra misc expenditures and costs</Typography>
-          </Box>
+       
+
+        
         </Box>
-        <Box
-          gridColumn="span 4"
-          gridRow="span 2"
-          backgroundColor={colors.primary[400]}
-        >
+       
+        <Box display="flex" flexDirection="row">
+  <Box flex="1" style={{ width: 400 }}>
+    <PieChart chartData={product} />
+  </Box>
+  <Box flex="2" style={{ width: 700 }}>
+    <BarChart chartData={userData} />
+  </Box>
+</Box>
 
      </Box>
-    </Box>
+    
   );
   }
 

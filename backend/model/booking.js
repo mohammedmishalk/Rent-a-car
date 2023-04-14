@@ -94,7 +94,7 @@ const bookingSchema = new Schema({
     type: String,
     required: true,
   },
-  paymentStatus: {
+  dropped: {
     type: String,
     default: 'Pending',
   },

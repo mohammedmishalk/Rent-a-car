@@ -6,6 +6,7 @@ import axios from "../../src/api/axios";
 import DefaultLayout from "../component/DefaultLayout"
 import { getAllCars } from '../redux/actions/carsActions';
 import Spinner from '../component/Spinner';
+import { config } from "../Helpers/axiosUserEndpoins";
 
 function Home() {
 
@@ -26,6 +27,8 @@ function Home() {
   const { cars } = useSelector(state => state.carsReducer);
   const { loading } = useSelector(state => state.alertsReducer);
   const [selectedCar, setSelectedCar] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(6); // Change the number of cars displayed per page here
   const dispatch = useDispatch();
@@ -36,7 +39,7 @@ function Home() {
 
   const carDetails = async (id) => {
     try {
-      const response = await axios.get(`/user/product/${id}`);
+      const response = await axios.get(`/user/product/${id}`,config);
       setSelectedCar(response.data);
       navigate('/booking', { state: { selectedCar: response.data } });
     } catch (error) {
@@ -50,12 +53,19 @@ function Home() {
 
   const indexOfLastCar = currentPage * pageSize;
   const indexOfFirstCar = indexOfLastCar - pageSize;
-  const currentCars = cars.slice(indexOfFirstCar, indexOfLastCar);
+  // const currentCars = cars.slice(indexOfFirstCar, indexOfLastCar);
+  const filteredCars = cars.filter(car => car.name.toLowerCase().includes(searchTerm.toLowerCase()));
+  const currentCars = filteredCars.slice(indexOfFirstCar, indexOfLastCar);
 
   return (
-    <DefaultLayout>
+    <DefaultLayout >
       {loading === true && (<Spinner />)}
+      <nav className="navbar">
+        <input type="text" placeholder="Search by car name" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+      </nav>
       <Row justify='center' gutter={16} className="mt-5">
+      {/* <input type="text" placeholder="Search by car name" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} /> */}
+
         {currentCars.map(car => {
           return <Col lg={5} sm={24} xs={24}>
             <div className='car p-2 bs1'>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@material-ui/core';
 import axios from "../../../api/axios";
+import {config} from "../../../Helpers/axiosAdminEndpoints"
 // import requests from '../../../api/request';
  import swal from 'sweetalert';
 
@@ -20,7 +21,7 @@ function ManageUser() {
       
 
 
-        const response = await axios.get("/admin/users");
+        const response = await axios.get("/admin/users",config);
        
         setUsers(response.data.users);
       } catch (error) {
@@ -56,7 +57,7 @@ function ManageUser() {
 
 
       
-      const response = await axios.get(`/admin/blockuser/${id}`);
+      const response = await axios.get(`/admin/blockuser/${id}`,config);
       console.log(response)
       window.location="/admin/manageuser"
     

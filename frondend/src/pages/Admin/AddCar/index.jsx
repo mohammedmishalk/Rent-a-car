@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "../../../api/axios";
+// import {config} from "../../../Helpers/axiosAdminEndpoints"
 import {
   Box,
   Button,
@@ -12,6 +13,13 @@ import {
 } from "@mui/material";
 
 const AddCar = () => {
+
+  const config = {
+    headers: {
+      Authorization: `${localStorage.getItem("token")}`,
+    },
+  };
+  
     const [name, setName] = useState('');
     const [image, setImage] = useState(null);
     const [rentPerDay, setRentPerDay] = useState(0);
@@ -68,7 +76,7 @@ const AddCar = () => {
       .post("/admin/addcar", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-        },
+        },...config,
       })
       .then((response) => {
         console.log(response);

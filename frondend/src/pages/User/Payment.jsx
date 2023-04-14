@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Row, Col, Divider, Button, Radio } from "antd";
 import DefaultLayout from "../../component/DefaultLayout";
 import axios from "../../api/axios";
+import { config } from "../../Helpers/axiosUserEndpoins";
+
 import useRazorpay from "react-razorpay";
 
 function Payment() {
@@ -34,7 +36,7 @@ function Payment() {
           to: location.state.to,
           driverRequired: location.state.driverRequired,
           totalDays: location.state.totalDays,
-        })
+        },config)
         .then((response) => {
           console.log(response);
           if (response.data[0].success) {
@@ -85,7 +87,7 @@ function Payment() {
         razorpay_signature: response.razorpay_signature,
         order,
         userId: uid,
-      })
+      },config)
       .then((response) => {
         if (response.data.success) {
           navigate("/success");

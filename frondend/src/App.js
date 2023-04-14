@@ -41,8 +41,10 @@ import Payment from './pages/User/Payment';
 import PaymentSuccess from './pages/User/PaymentSuccess';
 import AdminRouter from './Route/AdminRouter';
 import LoginAdmin from "./pages/Admin/LoginAdmin"
+import Carscol from "./pages/User/Carscol"
 function App() {
   const user=localStorage.getItem("user");
+  const token= localStorage.getItem("token")
   return (
     <Router>
       <Routes>
@@ -57,13 +59,15 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/success" element={<PaymentSuccess />} />
+        
+        <Route path="/home" element={ <Carscol/> } />
         <Route path="/" element={user ? <Home/> : <Navigate to="/login"/> } />
 
 
           //radmin route
         
-          <Route path="/admin/*" element={<AdminRouter />} />
-
+          <Route path="/admin/*" element={ token ?  <AdminRouter /> : <Navigate to="/admin/login"/>} />
+          
       </Routes>
     </Router>
   );

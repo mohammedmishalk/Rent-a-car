@@ -1,38 +1,37 @@
-const express = require('express');
-const { 
+const express = require("express");
+const {
   signup,
   login,
-  verifyTocken,
-  getUser,
-  refreshToken,
+
+  // getUser,
+
   PostOtp,
   getProductDetail,
-   booking,
-   getbookingDetail,
-   confirmOrder,
-   paymentFailure,
-   verifyPayment,
-   getOderDetail,
-   getWalletDetail,
-   cancel
-} = require('../Controllers/user-controller');
+  booking,
+  getbookingDetail,
+  confirmOrder,
+  paymentFailure,
+  verifyPayment,
+  getOderDetail,
+  getWalletDetail,
+  cancel,
+} = require("../Controllers/user-controller");
+const validateUserToken = require("../middleware/userToken");
 const router = express.Router();
 
 router.post("/signup", signup);
 router.post("/login", login);
-router.get("/alluser", verifyTocken, getUser);
-router.get("/refresh", refreshToken, verifyTocken, getUser);
+// router.get("/alluser", validateUserToken, getUser);
+// router.get("/refresh", refreshToken, verifyTocken, getUser);
 router.post("/verify-otp", PostOtp);
-router.get("/product/:id", getProductDetail);
-router.post("/booking", booking);  
-router.get("/history", getbookingDetail);
-router.get("/oderhistory", getOderDetail);
-router.get("/walletbalance", getWalletDetail);/// changed the route to match the frontend call
-router.post('/orderConfirmed',confirmOrder);
-router.post('/verifyPayment',verifyPayment);
-router.get('/paymentFail',paymentFailure);
-router.put('/cancel/:id', cancel);
-
-
+router.get("/product/:id", validateUserToken, getProductDetail);
+router.post("/booking", validateUserToken, booking);
+router.get("/history", validateUserToken, getbookingDetail);
+router.get("/oderhistory", validateUserToken, getOderDetail);
+router.get("/walletbalance", validateUserToken, getWalletDetail); /// changed the route to match the frontend call
+router.post("/orderConfirmed", validateUserToken, confirmOrder);
+router.post("/verifyPayment", validateUserToken, verifyPayment);
+router.get("/paymentFail", validateUserToken, paymentFailure);
+router.put("/cancel/:id", validateUserToken, cancel);
 
 module.exports = router;

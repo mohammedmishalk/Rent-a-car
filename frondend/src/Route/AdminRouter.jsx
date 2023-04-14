@@ -15,7 +15,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { ColorModeContext, useMode } from "../pages/Admin/theme";
 
 function AdminRouter() {
-  const token= "435445"
+  const token= localStorage.getItem("token")
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
 

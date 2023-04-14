@@ -1,4 +1,4 @@
-// import * as React from 'react';
+
 import React, { useEffect, useState } from 'react';
 import axios from "../../../api/axios";
 import Table from '@mui/material/Table';
@@ -10,11 +10,19 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 
+// import {config} from "../../../Helpers/axiosAdminEndpoints"
+
+//  console.log(config)
 
 
 
  function BasicTable() {
-
+  const config = {
+    headers: {
+      Authorization: `${localStorage.getItem("token")}`,
+    },
+  };
+  
 
   const [oder, setoders] = useState([]);
   const [error, setError] = useState(null);
@@ -22,7 +30,7 @@ import Paper from '@mui/material/Paper';
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get("/admin/Booking");
+        const response = await axios.get("/admin/Booking",config);
         setoders(response.data.found);
       } catch (error) {
         console.log(error);
@@ -39,7 +47,7 @@ import Paper from '@mui/material/Paper';
 
 
       
-      const response = await axios.put(`/admin/Refunde/${id}`);
+      const response = await axios.put(`/admin/Refunde/${id}`,null, config);
       console.log(response)
     window.location="/admin/oders"
     } catch (error) {
@@ -47,16 +55,24 @@ import Paper from '@mui/material/Paper';
     }
   }
   
+  const handleRutren=async(id)=>{
+    try {
+      const response = await axios.put(`/admin/deliver/${id}`,null, config);
+      console.log(response)
+    window.location="/admin/oders"
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const handleDrilver=async(id)=>{
     try {
-      const response = await axios.put(`/admin/deliver/${id}`);
+      const response = await axios.put(`/admin/dropped/${id}`,null, config);
       console.log(response)
     window.location="/admin/oders"
     } catch (error) {
       console.log(error);
     }
   }
-  
 
   return (
     <div style={{ height: 400, overflow: 'auto' }}>
@@ -70,7 +86,7 @@ import Paper from '@mui/material/Paper';
               <TableCell align="right">to</TableCell>
               <TableCell align="right">total Amount</TableCell>
               <TableCell align="right">Cancel</TableCell>
-              <TableCell align="right">paymentStatus</TableCell>
+              <TableCell align="right">drop Status</TableCell>
               <TableCell align="right">oder status</TableCell>
               {/* <TableCell align="right">Action</TableCell> */}
               <TableCell align="right">Action</TableCell>
@@ -91,22 +107,24 @@ import Paper from '@mui/material/Paper';
                 <TableCell align="right">{row.to}</TableCell>
                 <TableCell align="right">{row.totalAmount}</TableCell>
                 <TableCell align="right">{row.cancel}</TableCell>
-                <TableCell align="right">{row.paymentStatus}</TableCell>
+                <TableCell align="right">{row.dropped}</TableCell>
                 <TableCell align="right">{row.orderStatus}</TableCell>
                 {/* <TableCell align="right">{row.protein}</TableCell> */}
                 <TableCell align="right">
-  {row.cancel == "true" ? 
-    <button   onClick={() => handleRefund(row._id)} style={{backgroundColor: 'red', color: 'white', padding: '5px 10px', borderRadius: '4px'}}>Refund</button> 
+  {row.cancel === "true" ? 
+    <button onClick={() => handleRefund(row._id)} style={{backgroundColor: 'red', color: 'white', padding: '5px 10px', borderRadius: '4px'}}>Refund</button> 
+    : null
+  }
+  {row.dropped === 'Pending' && row.dropped !== 'true' && row.orderStatus !== 'Returned' && row.cancel !== "Refuned" ? 
+    <button onClick={() => handleDrilver(row._id)} style={{backgroundColor: 'green', color: 'white', padding: '5px 10px', borderRadius: '4px'}}>Delivered</button> 
+    : null
+  }
+  {row.orderStatus === 'Pending' && row.cancel !== "Refuned" ? 
+    <button onClick={() => handleRutren(row._id)} style={{backgroundColor: 'green', color: 'white', padding: '5px 10px', borderRadius: '4px'}}>Returned</button> 
     : null
   }
 </TableCell>
 
-<TableCell align="right">
-  {row.orderStatus === 'Pending' ? 
-    <button onClick={() => handleDrilver(row._id)} style={{backgroundColor: 'green', color: 'white', padding: '5px 10px', borderRadius: '4px'}}>Returned</button> 
-    : null
-  }
-</TableCell>
 
               </TableRow>
             ))}

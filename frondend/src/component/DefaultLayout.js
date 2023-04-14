@@ -4,22 +4,28 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWallet } from '@fortawesome/free-solid-svg-icons'
 import { Link } from "react-router-dom";
  import axios from "../api/axios";
+ import { config } from "../Helpers/axiosUserEndpoins";
 
 function Wallet() {
   const [balance, setBalance] = useState(0);
-
+  // const balance = localStorage.getItem('wallet');
   const uid = localStorage.getItem('uid');
 
   // retrieve balance from backend API on component mount
-  useEffect(() => {
-    axios.get('/user/walletbalance',{
-      params: {
-        uid: uid
-      }
-    })
-      .then(response => setBalance(response.data.wallet))
-      .catch(error => console.error(error));
-  }, [uid]);
+useEffect(() => {
+  axios.get('/user/walletbalance', {
+    params: {
+      uid: uid
+    },
+    ...config
+  })
+  .then(response => {
+    setBalance(response.data.wallet);
+    localStorage.setItem("wallet", response.data.wallet);
+  })
+  .catch(error => console.error(error));
+}, [uid]);
+
 
   return (
     <div className="wallet">

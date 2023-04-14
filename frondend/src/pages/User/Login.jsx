@@ -24,7 +24,7 @@ export default function Example() {
       if(response.data.token){
         localStorage.setItem("token",response.data.token)
         localStorage.setItem("email",response.data.email)
-        localStorage.setItem("wallet",response.data.wallet)
+        // localStorage.setItem("wallet",response.data.wallet)
         localStorage.setItem("user",response.data.name)
         localStorage.setItem("uid",response.data.uid)
         window.location="/"

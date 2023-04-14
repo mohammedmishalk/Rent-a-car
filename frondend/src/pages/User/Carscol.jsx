@@ -3,12 +3,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Navigation } from "swiper";
-
+import DefaultLayout from "../../component/DefaultLayout";
 export default function SliderComponent() {
   return (
-    <div style={{ position: "relative" }}>
+    <DefaultLayout>
+    <div style={{ position: "relative", overflow: "hidden" }}>
+
       <div style={{ position: "relative", width: "100%", height: "100%" }}>
-      
+      {/* <h1 style={{ position: "", top: "50%", left: "800px", transform: "translate(-50%, -50%)" }}>Welcome to Car Renter</h1> */}
         <button
           style={{
             
@@ -22,6 +24,7 @@ export default function SliderComponent() {
           Rent Car
         </button>
       </div>
+      <div style={{ position: "relative", height: "100vh" }}>
       <Swiper navigation modules={[Navigation]} className="mySwiper">
         <SwiperSlide>
           <img
@@ -29,6 +32,9 @@ export default function SliderComponent() {
             src="https://images.cdn.autoslash.com/blog/rent-car-someone-else.jpg"
             alt="image slide 1"
           />
+           <div style={{ position: "absolute", top: "40%", left: "45%", transform: "translate(-50%, -50%)" ,color: "red" }}>
+        <h1 style={{ color: "#ffffff" }}>Welcome to Car Renter</h1>
+      </div>
         </SwiperSlide>
         <SwiperSlide>
           <img
@@ -45,6 +51,8 @@ export default function SliderComponent() {
           />
         </SwiperSlide>
       </Swiper>
+      </div>
     </div>
+    </DefaultLayout>
   );
 }
