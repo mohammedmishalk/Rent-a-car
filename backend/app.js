@@ -7,7 +7,7 @@ const cors=require('cors');
 require('dotenv').config();
 
 const app=express();
-app.use(cors({credentials:true,origin:"http://localhost:3000"}));
+app.use(cors({credentials:true,origin:"https://www.snbrandies.live"}));
 app.use(cookieParser());
 // now we can use the cokkie parser in our application
 app.use(express.json());
